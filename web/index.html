@@ -1,0 +1,1210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="description" content="Verifiable credentials and collectible badges for AI agents." />
+    <meta property="og:title" content="txs.quest" />
+    <meta property="og:description" content="Verifiable credentials and collectible badges for AI agents." />
+    <meta property="og:image" content="https://txs.quest/farcaster-share.svg" />
+    <meta property="og:url" content="https://txs.quest/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="fc:miniapp"
+      content='{"version":"next","imageUrl":"https://txs.quest/farcaster-share.svg","button":{"title":"Claim","action":{"type":"launch_miniapp","name":"txs.quest","url":"https://txs.quest/claim?farcaster=1"}}}'
+    />
+    <meta
+      name="fc:frame"
+      content='{"version":"next","imageUrl":"https://txs.quest/farcaster-share.svg","button":{"title":"Claim","action":{"type":"launch_frame","name":"txs.quest","url":"https://txs.quest/claim?farcaster=1"}}}'
+    />
+    <title>txs.quest — Collectible Badges for AI Agents</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      (function() {
+        var lastTouchEnd = 0;
+        ["gesturestart", "gesturechange", "gestureend"].forEach(function(type) {
+          document.addEventListener(type, function(event) {
+            event.preventDefault();
+          }, { passive: false });
+        });
+        document.addEventListener('touchend', function(event) {
+          var now = Date.now();
+          if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+          }
+          lastTouchEnd = now;
+        }, { passive: false });
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="page-loader" id="page-loader">
+      <div class="page-loader-coin">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="14" r="12" stroke="white" stroke-width="1.5" fill="none" />
+        </svg>
+      </div>
+    </div>
+    <div class="shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <div class="site-header-left">
+            <a href="/" class="site-brand">txs.quest</a>
+            <p class="site-tagline">Collectible badges for agents</p>
+          </div>
+          <nav class="site-header-right">
+            <a href="/about" class="site-nav-link">About</a>
+            <button type="button" class="site-claim-link" id="open-claim-assistant">Claim</button>
+            <button
+              class="theme-toggle"
+              id="theme-toggle"
+              aria-label="Switch to dark mode"
+              title="Switch to dark mode"
+            >&#9679;</button>
+          </nav>
+        </div>
+      </header>
+
+      <div class="claim-assistant-modal" id="claim-assistant-modal" hidden>
+        <div class="claim-assistant-backdrop" id="claim-assistant-backdrop"></div>
+        <section
+          class="claim-assistant-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="claim-assistant-title"
+        >
+          <div class="claim-assistant-head">
+            <h2 id="claim-assistant-title">Check your badges</h2>
+            <button type="button" class="claim-assistant-close" id="close-claim-assistant" aria-label="Close">&times;</button>
+          </div>
+
+          <form id="claim-assistant-form" class="claim-assistant-form">
+            <input
+              id="claim-assistant-input"
+              type="text"
+              placeholder="Wallet address or ENS name"
+              autocomplete="off"
+            />
+            <button type="submit" class="primary">Check</button>
+          </form>
+
+          <div class="claim-assistant-divider">or</div>
+          <div class="claim-assistant-actions">
+            <button type="button" id="claim-assistant-connect" class="primary">Connect Wallet</button>
+            <button type="button" id="claim-assistant-farcaster">Connect Farcaster</button>
+            <button type="button" id="claim-assistant-use-connected">Use Connected</button>
+            <button type="button" id="claim-assistant-open-profile" hidden>View Profile</button>
+          </div>
+
+          <p id="claim-assistant-status" class="support-note"></p>
+
+          <section class="claim-assistant-manifest" id="claim-assistant-manifest" hidden>
+            <div class="claim-assistant-manifest-copy">
+              <p class="section-kicker">Mini App Setup</p>
+              <h3>Generate Farcaster domain signature</h3>
+              <p>
+                Generate the real <code>txs.quest</code> domain association with Warpcast's Mini App
+                Manifest Tool. If desktop fails, do this step inside the Farcaster mobile app, then
+                copy the command and run it locally.
+              </p>
+            </div>
+            <div class="claim-assistant-actions claim-assistant-manifest-actions">
+              <button type="button" id="claim-assistant-sign-manifest">Generate Signature</button>
+              <button type="button" id="claim-assistant-copy-manifest-command" hidden>Copy Command</button>
+            </div>
+            <div class="claim-assistant-manifest-output" id="claim-assistant-manifest-output" hidden>
+              <div class="claim-assistant-card claim-assistant-manifest-card">
+                <p class="section-kicker">Activation Command</p>
+                <pre id="claim-assistant-manifest-command"></pre>
+              </div>
+              <details class="claim-assistant-manifest-details">
+                <summary>Show header, payload, and signature</summary>
+                <div class="claim-assistant-manifest-fields">
+                  <label class="field">
+                    <span>Header</span>
+                    <textarea id="claim-assistant-manifest-header" rows="4" readonly></textarea>
+                  </label>
+                  <label class="field">
+                    <span>Payload</span>
+                    <textarea id="claim-assistant-manifest-payload" rows="5" readonly></textarea>
+                  </label>
+                  <label class="field">
+                    <span>Signature</span>
+                    <textarea id="claim-assistant-manifest-signature" rows="5" readonly></textarea>
+                  </label>
+                </div>
+              </details>
+            </div>
+            <details class="claim-assistant-manifest-details claim-assistant-manifest-debug" id="claim-assistant-manifest-debug" hidden>
+              <summary>Debug Mini App state</summary>
+              <pre id="claim-assistant-manifest-debug-output"></pre>
+            </details>
+          </section>
+
+          <section class="claim-assistant-result" id="claim-assistant-result" hidden>
+            <div class="claim-assistant-result-head">
+              <strong id="claim-assistant-summary-title"></strong>
+              <span id="claim-assistant-summary-subtitle"></span>
+            </div>
+            <div class="chip-list" id="claim-assistant-chip-list"></div>
+            <div class="claim-assistant-grid">
+              <div class="claim-assistant-card">
+                <p class="section-kicker">Available</p>
+                <div id="claim-assistant-outlook" class="claim-assistant-list"></div>
+              </div>
+              <div class="claim-assistant-card">
+                <p class="section-kicker">Up Next</p>
+                <div id="claim-assistant-next" class="claim-assistant-list"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <aside class="panel" aria-label="Controls" hidden>
+        <p class="eyebrow">Agentic POAP</p>
+        <h1>Looping Pins for Agents</h1>
+        <p class="lede">
+          A video-first badge studio for Tempo-native claims. Define badges, issue claims, and
+          preview looping pin assets for agent profiles.
+        </p>
+
+        <div class="controls">
+          <button type="button" id="use-pin-1" class="primary">Use Pin 1</button>
+          <button type="button" id="use-pin-2">Use Pin 2</button>
+          <button type="button" id="load-claim">Load Claim</button>
+          <button type="button" id="use-sample-claim">Use Sample Claim</button>
+          <button type="button" id="load-video">Load Video</button>
+        </div>
+        <input
+          id="claim-upload"
+          type="file"
+          accept=".json,.txt,application/json,text/plain"
+          hidden
+        />
+        <input
+          id="video-upload"
+          type="file"
+          accept=".mp4,video/mp4"
+          hidden
+        />
+
+        <dl class="specs">
+          <div>
+            <dt>Primary Asset</dt>
+            <dd>Short looping MP4 pin with a matching poster still.</dd>
+          </div>
+          <div>
+            <dt>Playback</dt>
+            <dd>Muted, autoplaying loops tuned for claim pages, feeds, and agent profile shelves.</dd>
+          </div>
+          <div>
+            <dt>Current Set</dt>
+            <dd>Source media from the <code>pins/</code> directory, mirrored into the web app at build time.</dd>
+          </div>
+        </dl>
+
+        <section class="studio-card">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Registry Mode</p>
+              <h2>Local demo or live contract</h2>
+            </div>
+          </div>
+          <form id="connection-form" class="form-grid">
+            <label class="field">
+              <span>Mode</span>
+              <select id="connection-mode" name="mode"></select>
+            </label>
+            <label class="field">
+              <span>Chain ID</span>
+              <input id="connection-chain-id" name="chainId" type="text" />
+            </label>
+            <label class="field wide">
+              <span>RPC URL</span>
+              <input id="connection-rpc-url" name="rpcUrl" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Deployment Profile</span>
+              <input
+                id="connection-deployment-url"
+                name="deploymentProfileUrl"
+                type="text"
+                placeholder="/local/anvil-deployment.json or /networks/tempo-testnet.json"
+              />
+            </label>
+            <label class="field wide">
+              <span>Badge Registry Address</span>
+              <input id="connection-badge-registry" name="badgeRegistryAddress" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Contract Wallet Provider</span>
+              <select id="connection-wallet-provider" name="walletProviderId"></select>
+            </label>
+            <label class="field wide">
+              <span>Resolved Asset Registry</span>
+              <input id="connection-asset-registry" type="text" readonly />
+            </label>
+            <label class="field wide">
+              <span>Resolved Identity Registry</span>
+              <input id="connection-identity-registry" type="text" readonly />
+            </label>
+            <label class="field wide">
+              <span>Balance Token</span>
+              <input id="connection-balance-token" type="text" readonly />
+            </label>
+            <label class="field">
+              <span>Contract Wallet</span>
+              <input id="connection-wallet" type="text" readonly />
+            </label>
+            <label class="field">
+              <span>Owner</span>
+              <input id="connection-owner" type="text" readonly />
+            </label>
+            <label class="field">
+              <span>Wallet Role</span>
+              <input id="connection-wallet-role" type="text" readonly />
+            </label>
+            <label class="field">
+              <span>Attestor Status</span>
+              <input id="connection-attestor" type="text" readonly />
+            </label>
+            <label class="field wide">
+              <span>Identity Status</span>
+              <input id="connection-identity-status" type="text" readonly />
+            </label>
+            <label class="field wide">
+              <span>MPP Payer Wallet</span>
+              <select id="connection-mpp-wallet-provider" name="mppWalletProviderId"></select>
+            </label>
+            <label class="field wide">
+              <span>Connected Payer</span>
+              <input id="connection-mpp-wallet" type="text" readonly />
+            </label>
+            <label class="field wide">
+              <span>MPP Mint Service</span>
+              <input id="connection-mpp-service" name="mppServiceUrl" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Oracle Proof Service</span>
+              <input id="connection-oracle-service" name="oracleServiceUrl" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Payment Proof Service</span>
+              <input id="connection-x402-service" name="x402ServiceUrl" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Farcaster Proof Service</span>
+              <input id="connection-farcaster-service" name="farcasterServiceUrl" type="text" />
+            </label>
+            <label class="field">
+              <span>MPP Price (Tempo USDC)</span>
+              <input id="connection-mpp-price" name="mppPrice" type="text" />
+            </label>
+          </form>
+          <div class="inline-actions">
+            <button type="button" id="save-connection">Save Config</button>
+            <button type="button" id="load-deployment">Load Deployment</button>
+            <button type="button" id="use-local-deployment">Use Local Deployment</button>
+            <button type="button" id="refresh-wallets">Refresh Wallets</button>
+            <button type="button" id="connect-wallet">Connect Contract Wallet</button>
+            <button type="button" id="connect-mpp-wallet">Connect Payer Wallet</button>
+            <button type="button" id="refresh-chain">Refresh Chain</button>
+            <button type="button" id="register-identity">Register Identity</button>
+            <button type="button" id="authorize-attestor">Authorize as Attestor</button>
+          </div>
+          <p id="connection-status" class="support-note"></p>
+          <div class="wallet-diagnostics">
+            <div class="wallet-diagnostics-header">
+              <p class="section-kicker">Wallet Diagnostics</p>
+              <strong id="wallet-diagnostics-summary">Click Refresh Wallets to scan for providers.</strong>
+            </div>
+            <div class="wallet-diagnostics-grid">
+              <section class="wallet-diagnostic-card">
+                <h3>Detected Providers</h3>
+                <div id="wallet-diagnostics-detected" class="wallet-diagnostic-list"></div>
+              </section>
+              <section class="wallet-diagnostic-card">
+                <h3>Resolved Sessions</h3>
+                <div id="wallet-diagnostics-session" class="wallet-diagnostic-list"></div>
+              </section>
+            </div>
+          </div>
+          <p class="support-note">
+            Local live loop: run <code>bun run deploy:local</code>, then click
+            <code>Use Local Deployment</code>. On localhost, the wallet picker also includes a
+            built-in <code>Local Dev Wallet</code> for browser-side issuance against Anvil.
+          </p>
+          <p class="support-note">
+            Localhost admin writes: badge definition and asset registration are routed through the
+            built-in <code>Local Dev Wallet</code> on chain <code>31337</code>, even if you keep an
+            injected wallet selected for claims or MPP payment.
+          </p>
+          <p class="support-note">
+            Paid live minting: run <code>bun run mint:server</code>, keep the contract wallet on
+            localhost if you want, then connect with Tempo Connect or a wallet extension to approve the MPP charge.
+          </p>
+          <p class="support-note">
+            Reusable oracle proofs: run <code>bun run oracle:server</code>. The service evaluates
+            wallet-age, protocol, portfolio, and internal-service badges only when the connected
+            wallet actively tries to claim.
+          </p>
+          <p class="support-note">
+            On-demand payment proofs: run <code>bun run x402:server</code>. The service only evaluates
+            a wallet's x402 and optional MPP payment history when that connected wallet actively tries
+            to claim.
+          </p>
+          <p class="support-note">
+            Testnet deploys: copy <code>config/testnet.example.json</code> to
+            <code>config/testnet.json</code>, fill in your RPC and proof URLs, then run
+            <code>bun run deploy:testnet</code>.
+          </p>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Operator Surface</p>
+              <h2>Oracle proof service</h2>
+            </div>
+            <button type="button" id="refresh-operator">Refresh Service</button>
+          </div>
+          <p id="operator-status" class="support-note">
+            Point the oracle proof URL at a local or testnet service to inspect health and recent proof decisions.
+          </p>
+          <div class="wallet-diagnostics-grid">
+            <section class="wallet-diagnostic-card">
+              <h3>Service Health</h3>
+              <div id="operator-health-list" class="wallet-diagnostic-list"></div>
+            </section>
+            <section class="wallet-diagnostic-card">
+              <h3>Recent Proof Decisions</h3>
+              <div id="operator-decision-list" class="wallet-diagnostic-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Tempo Claim Studio</p>
+              <h2>Badge and claim totals</h2>
+            </div>
+            <button type="button" id="reset-registry">Reset Demo Data</button>
+          </div>
+
+          <div class="metrics">
+            <article class="metric">
+              <span>Definitions</span>
+              <strong id="definition-count">0</strong>
+            </article>
+            <article class="metric">
+              <span>Claims</span>
+              <strong id="claim-count">0</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">1. Badge Definition</p>
+              <h2>Create a Tempo-native looping pin</h2>
+            </div>
+          </div>
+          <div class="inline-actions">
+            <button type="button" id="prefill-pin-1">Prefill Pin 1</button>
+            <button type="button" id="prefill-pin-2">Prefill Pin 2</button>
+            <button type="button" id="pull-current-asset">Use Loaded Asset</button>
+          </div>
+          <form id="definition-form" class="form-grid">
+            <label class="field">
+              <span>Badge Name</span>
+              <input id="definition-name" name="name" type="text" maxlength="120" required />
+            </label>
+            <label class="field">
+              <span>Creator</span>
+              <input id="definition-creator" name="creator" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Description</span>
+              <textarea id="definition-description" name="description" rows="3" maxlength="500"></textarea>
+            </label>
+            <label class="field">
+              <span>Badge Type</span>
+              <select id="definition-badge-type" name="badgeType"></select>
+            </label>
+            <label class="field">
+              <span>Verification</span>
+              <select id="definition-verification-type" name="verificationType"></select>
+            </label>
+            <label class="field">
+              <span>Unlock Method</span>
+              <select id="definition-unlock-adapter" name="unlockAdapterType"></select>
+            </label>
+            <label class="field wide">
+              <span>Unlock Target</span>
+              <input id="definition-unlock-target" name="unlockTargetAddress" type="text" />
+            </label>
+            <label class="field">
+              <span>Unlock Threshold</span>
+              <input id="definition-unlock-threshold" name="unlockThreshold" type="number" min="0" step="1" />
+            </label>
+            <label class="field">
+              <span>Unlock Signer</span>
+              <input id="definition-unlock-signer" name="unlockSignerAddress" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Unlock Notes</span>
+              <input id="definition-unlock-note" name="unlockNote" type="text" />
+            </label>
+            <div id="definition-oracle-panel" class="advanced-policy-panel wide" hidden>
+              <p class="support-note wide">
+                Reusable oracle-backed badges store a criteria JSON document onchain and only request
+                proof evaluation when the claiming wallet starts the claim flow.
+              </p>
+              <label class="field wide">
+                <span>Criteria JSON</span>
+                <textarea
+                  id="definition-oracle-criteria"
+                  name="oracleCriteriaJson"
+                  rows="8"
+                  placeholder='{"kind":"agentic-poap.wallet-age-activity.criteria.v1","minWalletAgeDays":"1460"}'
+                ></textarea>
+              </label>
+            </div>
+            <div id="definition-x402-panel" class="advanced-policy-panel wide" hidden>
+              <p class="support-note wide">
+                Payment-history badges stay optional and only request proof evaluation when the connected
+                wallet actively tries to claim.
+              </p>
+              <label class="field">
+                <span>Payment Metric</span>
+                <select id="definition-x402-metric" name="unlockMetric"></select>
+              </label>
+              <label class="field">
+                <span>Rails</span>
+                <select id="definition-x402-rail-mode" name="unlockRailMode"></select>
+              </label>
+              <label class="field">
+                <span>Identity Mode</span>
+                <select id="definition-x402-identity-mode" name="unlockIdentityMode"></select>
+              </label>
+              <label class="field">
+                <span>Window (Days)</span>
+                <input id="definition-x402-window-days" name="unlockWindowDays" type="number" min="0" step="1" />
+                <p class="field-hint">Use <code>0</code> to evaluate all recorded history.</p>
+              </label>
+              <label class="field wide">
+                <span>Service Origins</span>
+                <input
+                  id="definition-x402-origins"
+                  name="unlockOrigins"
+                  type="text"
+                  placeholder="stableenrich.dev, stablesocial.dev"
+                />
+                <p class="field-hint">Leave blank to count any paid service origin.</p>
+              </label>
+            </div>
+            <div class="field wide checkbox-field">
+              <span>Advanced Criteria</span>
+              <label class="checkbox-row" for="definition-advanced-enabled">
+                <input id="definition-advanced-enabled" name="advancedPolicyEnabled" type="checkbox" />
+                <span class="checkbox-copy">
+                  Enable optional 8183 evidence checks for this badge.
+                </span>
+              </label>
+            </div>
+            <div id="definition-advanced-panel" class="advanced-policy-panel wide" hidden>
+              <p id="definition-advanced-note" class="support-note wide">
+                Advanced criteria are optional and currently support oracle-backed attendance, reusable oracle services,
+                payment history, x402 history, and agent-attested 8183 badges.
+              </p>
+              <label class="field wide">
+                <span>8183 Context</span>
+                <input
+                  id="definition-advanced-context"
+                  name="advancedPolicyContext"
+                  type="text"
+                  placeholder="trailblazer-launch or 0x..."
+                />
+                <p class="field-hint">A readable context is hashed automatically unless you enter a bytes32.</p>
+              </label>
+              <label class="field wide">
+                <span>8183 Schema</span>
+                <input
+                  id="definition-advanced-schema"
+                  name="advancedPolicySchema"
+                  type="text"
+                  placeholder="agentic-poap.oracle-event.v1 or 0x..."
+                />
+              </label>
+              <label class="field wide">
+                <span>Required Issuer</span>
+                <input
+                  id="definition-advanced-issuer"
+                  name="advancedPolicyRequiredIssuer"
+                  type="text"
+                  placeholder="0x..."
+                />
+              </label>
+              <label class="field">
+                <span>Max Proof Age</span>
+                <input
+                  id="definition-advanced-max-age"
+                  name="advancedPolicyMaxAge"
+                  type="number"
+                  min="0"
+                  step="1"
+                />
+                <p class="field-hint">Use <code>0</code> to allow any age before the proof expiry.</p>
+              </label>
+              <label class="field">
+                <span>Nonce Scope</span>
+                <select id="definition-advanced-nonce-scope" name="advancedPolicyNonceScope">
+                  <option value="GLOBAL">Global</option>
+                  <option value="PER_ISSUER">Per Issuer</option>
+                  <option value="PER_SUBJECT">Per Subject</option>
+                  <option value="NONE">None</option>
+                </select>
+              </label>
+              <div class="field wide checkbox-field">
+                <span>Proof Expiry</span>
+                <label class="checkbox-row" for="definition-advanced-require-expiry">
+                  <input
+                    id="definition-advanced-require-expiry"
+                    name="advancedPolicyRequireExpiry"
+                    type="checkbox"
+                    checked
+                  />
+                  <span class="checkbox-copy">Require the 8183 proof package to include an expiry window.</span>
+                </label>
+              </div>
+            </div>
+            <label class="field">
+              <span>Max Claims</span>
+              <input id="definition-max-claims" name="maxClaims" type="number" min="0" step="1" />
+            </label>
+            <label class="field">
+              <span>Existing Asset ID</span>
+              <input id="definition-asset-id" name="assetId" type="number" min="0" step="1" />
+            </label>
+            <label class="field wide">
+              <span>Video URI</span>
+              <input id="definition-video-uri" name="videoUri" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Poster URI</span>
+              <input id="definition-poster-uri" name="posterUri" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Detail URI</span>
+              <input id="definition-detail-uri" name="detailUri" type="text" />
+            </label>
+            <label class="field">
+              <span>Edition</span>
+              <input id="definition-edition" name="edition" type="text" />
+            </label>
+            <label class="field">
+              <span>Loop Seconds</span>
+              <input id="definition-loop-seconds" name="loopSeconds" type="number" min="1" step="1" />
+            </label>
+            <label class="field wide">
+              <span>Video Hash</span>
+              <input id="definition-video-hash" name="videoHash" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Poster Hash</span>
+              <input id="definition-poster-hash" name="posterHash" type="text" />
+            </label>
+            <button type="submit" class="primary wide">Define Badge</button>
+          </form>
+          <p id="definition-status" class="support-note"></p>
+          <div id="definition-list" class="chip-list"></div>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">2. Claim Issuance</p>
+              <h2>Record a claim and generate a <code>claimURI</code></h2>
+            </div>
+          </div>
+          <form id="claim-form" class="form-grid">
+            <label class="field">
+              <span>Badge</span>
+              <select id="claim-definition" name="definitionId"></select>
+            </label>
+            <label class="field">
+              <span>Agent</span>
+              <input id="claim-agent" name="agent" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Proof Note</span>
+              <input id="claim-proof-note" name="proofNote" type="text" />
+            </label>
+            <label class="field wide">
+              <span>Issued By</span>
+              <input id="claim-issued-by" name="issuedBy" type="text" />
+            </label>
+            <label class="field">
+              <span>Claim Path</span>
+              <select id="claim-execution-path" name="executionPath">
+                <option value="auto">Auto</option>
+                <option value="direct">Direct Self-Claim</option>
+                <option value="attestor">Attestor Record</option>
+              </select>
+            </label>
+            <label class="field wide">
+              <span>Proof Package</span>
+              <textarea
+                id="claim-proof-package"
+                name="proofPackage"
+                rows="5"
+                placeholder="Paste a signed proof package (required for oracle event unlocks)."
+              ></textarea>
+            </label>
+          </form>
+          <div class="inline-actions">
+            <button type="button" id="claim-use-connected-wallet">Use Contract Wallet</button>
+            <button type="button" id="load-local-event-proof">Load Local Event Proof</button>
+            <button type="button" id="clear-proof-package">Clear Proof</button>
+            <button type="submit" form="claim-form" class="primary">Issue Claim</button>
+            <button type="button" id="mint-via-mpp">Mint via Paid Service</button>
+          </div>
+          <p id="claim-status" class="support-note"></p>
+          <p id="claim-proof-status" class="support-note"></p>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">Selected Claim</p>
+              <h2>Share or inspect the claim</h2>
+            </div>
+          </div>
+          <div class="inline-actions">
+            <button type="button" id="copy-claim-uri">Copy Claim URI</button>
+            <button type="button" id="copy-share-link">Copy Share Link</button>
+            <button type="button" id="copy-profile-link">Copy Profile Link</button>
+            <button type="button" id="open-share-page">Open Share Page</button>
+            <button type="button" id="open-profile-page">Open Agent Profile</button>
+            <button type="button" id="download-claim-json">Download JSON</button>
+            <button type="button" id="open-latest-claim">View Claim</button>
+          </div>
+          <label class="field wide">
+            <span>Share Page</span>
+            <input id="claim-share-url-output" type="text" readonly />
+          </label>
+          <label class="field wide">
+            <span>Agent Reputation</span>
+            <input id="claim-reputation-output" type="text" readonly />
+          </label>
+          <label class="field wide">
+            <span>Evidence Summary</span>
+            <textarea id="claim-evidence-output" rows="4" readonly></textarea>
+          </label>
+          <label class="field wide">
+            <span>Claim URI</span>
+            <textarea id="claim-uri-output" rows="4" readonly></textarea>
+          </label>
+          <label class="field wide">
+            <span>Claim JSON</span>
+            <textarea id="claim-json-output" rows="8" readonly></textarea>
+          </label>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">Latest Result</p>
+              <h2>Recent live transaction output</h2>
+            </div>
+          </div>
+          <div class="inline-actions">
+            <button type="button" id="copy-result-primary-tx">Copy Primary Tx</button>
+            <button type="button" id="copy-result-secondary-tx">Copy Secondary Tx</button>
+            <button type="button" id="copy-result-share-link">Copy Result Share</button>
+            <button type="button" id="open-result-share-link">Open Result Share</button>
+            <button type="button" id="clear-result-output">Clear Result</button>
+          </div>
+          <label class="field wide">
+            <span>Operation</span>
+            <input id="result-operation-output" type="text" readonly />
+          </label>
+          <label class="field wide">
+            <span>Summary</span>
+            <input id="result-summary-output" type="text" readonly />
+          </label>
+          <label class="field wide">
+            <span>Primary Tx Hash</span>
+            <input id="result-primary-tx-output" type="text" readonly />
+          </label>
+          <label class="field wide">
+            <span>Secondary Tx Hash</span>
+            <input id="result-secondary-tx-output" type="text" readonly />
+          </label>
+          <div class="form-grid">
+            <label class="field">
+              <span>Asset ID</span>
+              <input id="result-asset-id-output" type="text" readonly />
+            </label>
+            <label class="field">
+              <span>Definition ID</span>
+              <input id="result-definition-id-output" type="text" readonly />
+            </label>
+          </div>
+          <label class="field wide">
+            <span>Share Page</span>
+            <input id="result-share-url-output" type="text" readonly />
+          </label>
+          <label class="field wide">
+            <span>Claim URI</span>
+            <textarea id="result-claim-uri-output" rows="3" readonly></textarea>
+          </label>
+        </section>
+
+        <section class="studio-card">
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">3. Claim Gallery</p>
+              <h2>Browse issued records</h2>
+            </div>
+          </div>
+          <div class="metrics gallery-metrics">
+            <article class="metric">
+              <span>Visible</span>
+              <strong id="gallery-visible-count">0</strong>
+            </article>
+            <article class="metric">
+              <span>Agents</span>
+              <strong id="gallery-agent-count">0</strong>
+            </article>
+          </div>
+          <div class="form-grid gallery-controls">
+            <label class="field wide">
+              <span>Filter</span>
+              <input
+                id="gallery-filter"
+                type="search"
+                placeholder="Filter by badge, agent, edition, or verification"
+                aria-label="Filter claims"
+              />
+            </label>
+            <label class="field">
+              <span>Scope</span>
+              <select id="gallery-scope">
+                <option value="all">All Claims</option>
+                <option value="selected-agent">Current Agent</option>
+                <option value="shareable">Shareable</option>
+                <option value="recent">Recent</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Sort</span>
+              <select id="gallery-sort">
+                <option value="newest">Newest First</option>
+                <option value="reputation">Highest Reputation</option>
+                <option value="badge">Badge Name</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+            </label>
+          </div>
+          <div class="inline-actions gallery-inline-actions">
+            <button type="button" id="clear-gallery-filters">Clear Filters</button>
+            <button type="button" id="clear-agent-filter">All Agents</button>
+          </div>
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">Agent Shelf</p>
+              <h2>Agents with claims</h2>
+            </div>
+          </div>
+          <div id="agent-shelf" class="agent-shelf"></div>
+          <p id="gallery-status" class="support-note"></p>
+          <div id="claim-gallery" class="gallery-list"></div>
+        </section>
+
+        <p class="hint">
+          Open with <code>?localClaim=1</code>, <code>?claim=/claims/trailblazer-loop-claim.json</code>,
+          <code>?deployment=/local/anvil-deployment.json&amp;claimAgent=0x...&amp;claimDef=0</code>,
+          <code>?deployment=/local/anvil-deployment.json&amp;profileAgent=0x...</code>, or
+          <code>?samplePin=pin1</code>.
+        </p>
+        <p id="asset-status" class="source-note">
+          Viewing the default looping pin. Each badge includes a poster image and an MP4 loop.
+        </p>
+      </aside>
+
+      <main class="viewer-wrap" aria-label="Preview">
+        <section id="badge-wall-stage" class="badge-wall-stage">
+          <div class="badge-wall-card">
+            <p id="badge-grid-status" class="badge-grid-status"></p>
+            <div id="badge-grid" class="badge-grid"></div>
+          </div>
+        </section>
+        <section class="preview-stage">
+          <div class="preview-card">
+            <video
+              id="pin-video"
+              class="pin-video"
+              muted
+              autoplay
+              loop
+              playsinline
+              disablepictureinpicture
+              controlslist="nodownload nofullscreen noremoteplayback"
+            ></video>
+            <div class="preview-header">
+              <h2 id="preview-title">Trailblazer</h2>
+              <p id="preview-meta" class="support-note" hidden></p>
+              <div class="inline-actions preview-actions">
+                <button type="button" id="show-badge-wall">All badges</button>
+              </div>
+            </div>
+            <img id="pin-poster" class="pin-poster" alt="Current pin poster" />
+            <section class="profile-surface">
+              <div class="section-header compact">
+                <div>
+                  <p class="section-kicker">Agent Profile</p>
+                  <h2 id="profile-heading">Badges and activity</h2>
+                </div>
+              </div>
+              <p id="profile-summary" class="support-note">
+                Tap a badge to see this agent's collection and connections.
+              </p>
+              <div id="profile-chip-list" class="chip-list"></div>
+              <div class="detail-grid">
+                <article class="detail-card">
+                  <p class="section-kicker">Overview</p>
+                  <h3 id="profile-overview-title">Agent info</h3>
+                  <div id="profile-overview-lines" class="detail-list"></div>
+                </article>
+                <article class="detail-card">
+                  <p class="section-kicker">Badge Shelf</p>
+                  <h3 id="profile-badge-title">Badges earned</h3>
+                  <div id="profile-badge-claims" class="detail-list"></div>
+                </article>
+                <article class="detail-card">
+                  <p class="section-kicker">Recent Activity</p>
+                  <h3 id="profile-recent-title">Recent activity</h3>
+                  <div id="profile-recent-claims" class="detail-list"></div>
+                </article>
+                <article class="detail-card">
+                  <p class="section-kicker">Neighbors</p>
+                  <h3 id="profile-neighbor-title">Agents with shared badges</h3>
+                  <div id="profile-neighbor-list" class="detail-list"></div>
+                </article>
+              </div>
+            </section>
+            <section class="detail-surface">
+              <div class="section-header compact">
+                <div>
+                  <p class="section-kicker">Badge Detail</p>
+                  <h2 id="detail-heading">Claim details</h2>
+                </div>
+              </div>
+              <p id="detail-description" class="support-note">
+                See how this badge was earned and who else holds it.
+              </p>
+              <div id="detail-chip-list" class="chip-list"></div>
+              <div class="detail-grid">
+                <article class="detail-card">
+                  <p class="section-kicker">Unlock</p>
+                  <h3 id="detail-unlock-title">How it was earned</h3>
+                  <p id="detail-unlock-summary" class="support-note"></p>
+                  <div id="detail-unlock-lines" class="detail-list"></div>
+                </article>
+                <article class="detail-card">
+                  <p class="section-kicker">Claim Record</p>
+                  <h3 id="detail-record-title">Claim record</h3>
+                  <div id="detail-record-lines" class="detail-list"></div>
+                </article>
+                <article class="detail-card">
+                  <p class="section-kicker">Holders</p>
+                  <h3 id="detail-related-badge-title">Other holders</h3>
+                  <div id="detail-related-badge-claims" class="detail-list"></div>
+                </article>
+                <article class="detail-card">
+                  <p class="section-kicker">Agent Shelf</p>
+                  <h3 id="detail-related-agent-title">More from this agent</h3>
+                  <div id="detail-related-agent-claims" class="detail-list"></div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Verifiable credentials for AI agents</p>
+      </footer>
+    </div>
+
+    <script>
+      (function() {
+        var loader = document.getElementById('page-loader');
+        if (!loader) return;
+        function hideLoader() { loader.classList.add('is-hidden'); }
+        // Wait for badge tiles or timeout
+        function check() {
+          var tiles = document.querySelectorAll('.badge-tile[data-view-pin], .badge-tile[data-view-badge]');
+          if (tiles.length > 0) { hideLoader(); return; }
+          // Also hide if detail mode is active (preview showing)
+          var wall = document.getElementById('badge-wall-stage');
+          if (wall && wall.classList.contains('is-hidden')) { hideLoader(); return; }
+          requestAnimationFrame(check);
+        }
+        // Start checking after DOM is ready
+        if (document.readyState === 'complete') check();
+        else window.addEventListener('load', check);
+        // Fallback: always hide after 4s
+        setTimeout(hideLoader, 4000);
+      })();
+    </script>
+    <script type="module" src="./app.js"></script>
+    <script>
+      // View Transitions: badge wall ↔ detail morph
+      (function() {
+        if (!document.startViewTransition) return;
+
+        var skip = false;
+
+        document.addEventListener('click', function(e) {
+          if (skip) return;
+
+          var tile = e.target.closest('.badge-tile[data-view-pin], .badge-tile[data-view-badge]');
+          if (tile) {
+            var poster = tile.querySelector('.card-poster, .badge-tile-poster');
+            if (poster) poster.style.viewTransitionName = 'badge-media';
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var t = document.startViewTransition(function() {
+              if (poster) poster.style.viewTransitionName = '';
+              skip = true; tile.click(); skip = false;
+            });
+            t.finished.catch(function() {});
+            return;
+          }
+
+          var wallBtn = e.target.closest('#show-badge-wall');
+          if (wallBtn) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var t = document.startViewTransition(function() {
+              skip = true; wallBtn.click(); skip = false;
+            });
+            t.finished.catch(function() {});
+          }
+        }, true);
+      })();
+    </script>
+    <script>
+      // Claim modal: typing resonance
+      (function() {
+        var input = document.getElementById('claim-assistant-input');
+        if (!input) return;
+
+        var typingTimer;
+
+        input.addEventListener('input', function() {
+          input.classList.add('is-typing');
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(function() {
+            input.classList.remove('is-typing');
+          }, 150);
+
+          var val = input.value.trim();
+          var isValid = (val.startsWith('0x') && val.length === 42) || val.endsWith('.eth');
+          input.classList.toggle('is-valid', isValid);
+        });
+
+        input.addEventListener('blur', function() {
+          input.classList.remove('is-typing');
+        });
+      })();
+
+      // Remember scroll position when entering/leaving badge detail
+      (function() {
+        var savedScroll = 0;
+        var stage = document.getElementById('badge-wall-stage');
+        if (!stage) return;
+        var obs = new MutationObserver(function() {
+          if (stage.classList.contains('is-hidden')) {
+            // Entering detail — save scroll
+            savedScroll = window.scrollY;
+          } else {
+            // Returning to grid — restore scroll
+            requestAnimationFrame(function() {
+              window.scrollTo(0, savedScroll);
+            });
+          }
+        });
+        obs.observe(stage, { attributes: true, attributeFilter: ['class'] });
+      })();
+
+      // Click outside preview card → back to badge wall
+      document.addEventListener('click', function(e) {
+        var stage = document.getElementById('badge-wall-stage');
+        if (!stage || !stage.classList.contains('is-hidden')) return;
+        if (e.target.closest('.badge-tile[data-view-pin], .claim-card[data-view-claim], button[data-view-claim], button[data-view-profile], #show-badge-wall')) {
+          return;
+        }
+        var card = document.querySelector('.preview-card');
+        var header = document.querySelector('.site-header');
+        if (card && !card.contains(e.target) && !header.contains(e.target)) {
+          var wallBtn = document.getElementById('show-badge-wall');
+          if (wallBtn) wallBtn.click();
+        }
+      });
+
+      // 3D tilt on badge cards
+      (function() {
+        var MAX_TILT = 8;
+        var LIFT = -8;
+
+        document.addEventListener('mousemove', function(e) {
+          var tile = e.target.closest('.badge-tile:not(.is-empty)');
+          if (!tile) return;
+          var rect = tile.getBoundingClientRect();
+          var x = (e.clientX - rect.left) / rect.width;
+          var y = (e.clientY - rect.top) / rect.height;
+          var rotateY = (x - 0.5) * MAX_TILT * 2;
+          var rotateX = (0.5 - y) * MAX_TILT * 2;
+          tile.style.transform = 'translateY(' + LIFT + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
+        });
+
+        document.addEventListener('mouseleave', function(e) {
+          var tile = e.target.closest('.badge-tile');
+          if (tile) tile.style.transform = '';
+        }, true);
+
+        document.addEventListener('mouseout', function(e) {
+          var tile = e.target.closest('.badge-tile');
+          if (tile && !tile.contains(e.relatedTarget)) {
+            tile.style.transform = '';
+          }
+        });
+      })();
+    </script>
+    <script type="module">
+      // Badge swipe navigation
+      (function() {
+        const previewCard = document.querySelector('.preview-card');
+        if (!previewCard) return;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const SWIPE_THRESHOLD = 50;
+
+        function getBadgeIds() {
+          return Array.from(document.querySelectorAll('.badge-tile[data-view-pin]'))
+            .map(el => el.dataset.viewPin);
+        }
+
+        function getCurrentBadgeId() {
+          const selected = document.querySelector('.badge-tile.is-selected[data-view-pin]');
+          return selected?.dataset.viewPin || null;
+        }
+
+        let swiping = false;
+
+        function navigateRelative(direction) {
+          const ids = getBadgeIds();
+          if (ids.length < 2 || swiping) return;
+          const currentId = getCurrentBadgeId();
+          const currentIndex = currentId ? ids.indexOf(currentId) : -1;
+          let nextIndex;
+          if (direction === 'next') {
+            nextIndex = currentIndex < ids.length - 1 ? currentIndex + 1 : 0;
+          } else {
+            nextIndex = currentIndex > 0 ? currentIndex - 1 : ids.length - 1;
+          }
+
+          const tile = document.querySelector(`.badge-tile[data-view-pin="${ids[nextIndex]}"]`);
+          if (!tile) return;
+
+          swiping = true;
+          const outClass = direction === 'next' ? 'swipe-out-left' : 'swipe-out-right';
+          const inClass = direction === 'next' ? 'swipe-in-right' : 'swipe-in-left';
+
+          previewCard.classList.add(outClass);
+
+          setTimeout(() => {
+            tile.click();
+            previewCard.classList.remove(outClass);
+            previewCard.classList.add(inClass);
+            window.scrollTo({ top: 0 });
+            setTimeout(() => {
+              previewCard.classList.remove(inClass);
+              swiping = false;
+            }, 350);
+          }, 250);
+        }
+
+        // Touch events
+        previewCard.addEventListener('touchstart', function(e) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        previewCard.addEventListener('touchend', function(e) {
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          const dy = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+            navigateRelative(dx < 0 ? 'next' : 'prev');
+          }
+        }, { passive: true });
+
+        // Keyboard arrows
+        document.addEventListener('keydown', function(e) {
+          const stage = document.getElementById('badge-wall-stage');
+          if (stage && !stage.classList.contains('is-hidden')) return;
+          if (e.key === 'ArrowRight') { navigateRelative('next'); e.preventDefault(); }
+          if (e.key === 'ArrowLeft') { navigateRelative('prev'); e.preventDefault(); }
+        });
+      })();
+    </script>
+    <script>
+      (function() {
+        var toggle = document.getElementById('theme-toggle');
+        var root = document.documentElement;
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light') {
+          root.dataset.theme = 'light';
+        } else {
+          root.dataset.theme = 'dark';
+          toggle.textContent = '\u25CB';
+          toggle.setAttribute('aria-label', 'Switch to light mode');
+          toggle.setAttribute('title', 'Switch to light mode');
+        }
+        function applyTheme(theme) {
+          root.dataset.theme = theme;
+          toggle.textContent = theme === 'dark' ? '\u25CB' : '\u25CF';
+          toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+          toggle.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+        toggle.addEventListener('click', function() {
+          var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          applyTheme(next);
+          localStorage.setItem('theme', next);
+        });
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+          if (!localStorage.getItem('theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

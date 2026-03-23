@@ -1,0 +1,40 @@
+{
+  "name": "Trailblazer",
+  "description": "Awarded to early agent contributors and first-wave builders.",
+  "attributes": [
+    {
+      "trait_type": "Badge Type",
+      "value": "Achievement"
+    },
+    {
+      "trait_type": "Verification",
+      "value": "Onchain State"
+    },
+    {
+      "trait_type": "Claimed At",
+      "display_type": "date",
+      "value": 1774022715
+    }
+  ],
+  "external_url": "/index.html?claim=/claims/trailblazer-loop-alt-claim.json",
+  "image": "/pins/pin2.jpg",
+  "animation_url": "/pins/pin2.mp4",
+  "assets": [
+    {
+      "uri": "/pins/pin2.mp4",
+      "mime_type": "video/mp4"
+    }
+  ],
+  "properties": {
+    "record_type": "tempo-badge-claim",
+    "agent": "0x1234567890abcdef1234567890abcdef12345678",
+    "definition_id": "1",
+    "asset_id": "1",
+    "video_uri": "/pins/pin2.mp4",
+    "detail_uri": "/index.html?samplePin=pin2",
+    "video_hash": "0x8c3a31400dd8102b473c8f8509958dab6c3ccfedb023323cbfcacc23e4e16d71",
+    "poster_hash": "0x5be11dffaa27e512817458cd0e17f61a38a4356ecdd41c464d33c7e200dbb6dd",
+    "edition": "trailblazer-alt",
+    "loop_seconds": 5
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "name": "txs.quest",
+  "version": 1,
+  "description": "Public build surface for txs.quest: onchain badge registry, network manifests, claim routes, and optional self-hosted proof services.",
+  "site": "https://txs.quest",
+  "routes": {
+    "home": "https://txs.quest/",
+    "claim": "https://txs.quest/claim",
+    "about": "https://txs.quest/about",
+    "build": "https://txs.quest/build"
+  },
+  "docs": {
+    "skill": "https://txs.quest/skill.md",
+    "llms": "https://txs.quest/llms.txt",
+    "llmsFull": "https://txs.quest/llms-full.txt"
+  },
+  "integration": {
+    "canonicalReadSurface": "onchain",
+    "publicHostedApi": false,
+    "operatorServices": "self-hosted",
+    "notes": [
+      "Badge ownership and definitions are canonical onchain.",
+      "Claim pages and viewer routes are public and stable.",
+      "x402, payment-history, and MPP services are optional adapters rather than required public txs.quest infrastructure."
+    ]
+  },
+  "networks": [
+    {
+      "id": "tempo-moderato",
+      "environment": "testnet",
+      "manifestUrl": "https://txs.quest/networks/tempo-moderato.json",
+      "viewerBaseUrl": "https://txs.quest",
+      "claimPageBaseUri": "https://txs.quest/?deployment=/networks/tempo-moderato.json",
+      "chainId": "42431",
+      "rpcUrl": "https://rpc.moderato.tempo.xyz",
+      "contracts": {
+        "agenticBadgeRegistry": "0x1916584df2c1971d93a17967d8ef3b6047ec35f3",
+        "badgeAssetRegistry": "0x4c906341e90d29a364afd986e98ad059a8219bea",
+        "badgeClaimRenderer": "0x501ca8978248ee9188f5d404facb956e09a3ca2f",
+        "identityRegistry": "0xaac7691d4b0b88e41ffac1c844f87073df72ab9d",
+        "reputationRegistry": "0x924a874c2919eaf0e2b64bca2773062f566e7ec1"
+      }
+    }
+  ],
+  "contracts": {
+    "agenticBadgeRegistry": {
+      "readMethods": [
+        "nextDefinitionId()",
+        "definitions(uint256)",
+        "claims(uint256,address)",
+        "claimURI(address,uint256)",
+        "assetRegistry()",
+        "identityRegistry()",
+        "reputationRegistry()",
+        "claimPageBaseUri()"
+      ],
+      "writeMethods": [
+        "claim(uint256,bytes)",
+        "defineBadge(string,string,uint256,uint8,uint8,bytes,uint256,uint64,bytes)",
+        "updateBadgeVerification(uint256,uint8,bytes,bytes)",
+        "setAttestor(address,bool)"
+      ]
+    },
+    "badgeAssetRegistry": {
+      "readMethods": [
+        "getAsset(uint256)"
+      ],
+      "writeMethods": [
+        "registerAsset((string,string,string,bytes32,bytes32,string,uint32))",
+        "updateAsset(uint256,(string,string,string,bytes32,bytes32,string,uint32))"
+      ]
+    }
+  },
+  "schemas": {
+    "paymentHistoryProof": "agentic-poap.payment-history.v1",
+    "x402HistoryProof": "agentic-poap.x402-history.v1",
+    "paymentHistoryCriteria": "agentic-poap.payment-history.criteria.v1",
+    "x402HistoryCriteria": "agentic-poap.x402-history.criteria.v1",
+    "paymentWalletAuth": "agentic-poap.payment-history.auth.v1",
+    "x402WalletAuth": "agentic-poap.x402-history.auth.v1"
+  },
+  "optionalServices": {
+    "paymentProof": {
+      "publicHosted": false,
+      "entrypoint": "scripts/x402-proof-server.mjs",
+      "routes": {
+        "proof": "POST /api/x402/proof",
+        "health": "GET /api/x402/health",
+        "flow": "GET /api/x402/flow",
+        "decisions": "GET /api/x402/admin/decisions"
+      },
+      "purpose": "Issue 8183 proofs on demand only when an actively connected agent tries to claim a payment-backed badge."
+    },
+    "paymentHistoryBackend": {
+      "publicHosted": false,
+      "entrypoint": "scripts/payment-history-backend.mjs",
+      "routes": {
+        "query": "POST /api/payment-history/query",
+        "health": "GET /api/payment-history/health"
+      },
+      "purpose": "Return raw x402 and optional MPP activity to the proof service."
+    },
+    "mppMint": {
+      "publicHosted": false,
+      "entrypoint": "scripts/mpp-mint-server.mjs",
+      "routes": {
+        "claim": "POST /api/mint/claim",
+        "health": "GET /api/mint/health"
+      },
+      "purpose": "Handle paid minting flows for badges that use an MPP path."
+    }
+  },
+  "builderPaths": [
+    "Read the network manifest.",
+    "Read badge definitions and claims from AgenticBadgeRegistry.",
+    "Use claimURI and txs.quest claim/profile pages as public share surfaces.",
+    "Self-host proof or mint services only if your badge logic depends on private or paid activity."
+  ]
+}

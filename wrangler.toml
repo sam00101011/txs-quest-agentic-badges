@@ -1,0 +1,9 @@
+name = "txs-quest"
+compatibility_date = "2026-03-22"
+pages_build_output_dir = "dist"
+
+[vars]
+FARCASTER_PROOF_RPC_URL = "https://rpc.moderato.tempo.xyz"
+FARCASTER_PROOF_CHAIN_ID = "42431"
+FARCASTER_PROOF_BADGE_REGISTRY_ADDRESS = "0x1916584df2c1971d93a17967d8ef3b6047ec35f3"
+FARCASTER_QUICK_AUTH_ORIGIN = "https://auth.farcaster.xyz"

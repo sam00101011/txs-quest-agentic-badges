@@ -1,0 +1,10 @@
+{
+  "source": "http",
+  "url": "http://127.0.0.1:8789/api/payment-history/query",
+  "healthUrl": "http://127.0.0.1:8789/api/payment-history/health",
+  "requestShape": "agentic-poap.payment-history.v1",
+  "timeoutMs": 8000,
+  "headers": {
+    "x-agentic-product": "agentic-poap"
+  }
+}

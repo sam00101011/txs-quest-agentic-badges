@@ -1,0 +1,64 @@
+{
+  "internalServiceActivity": {
+    "0x1234567890abcdef1234567890abcdef12345678": {
+      "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "activities": [
+        {
+          "serviceId": "openclaw",
+          "rail": "APP",
+          "activityCount": 1,
+          "paidRequests": 0,
+          "spendUsd": 0,
+          "timestamp": 1714521600,
+          "subjectType": "AGENT",
+          "subjectId": "sample-openclaw-agent"
+        }
+      ],
+      "evmChains": [
+        {
+          "chainId": "base",
+          "txCount": 3,
+          "agentTxCount": 3,
+          "subjectType": "AGENT",
+          "subjectId": "sample-openclaw-agent",
+          "lastSeenAt": 1714608000
+        }
+      ]
+    },
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": {
+      "walletAddress": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+      "activities": [
+        {
+          "serviceId": "bankr-llm",
+          "rail": "X402",
+          "activityCount": 2,
+          "paidRequests": 2,
+          "spendUsd": 0.08,
+          "timestamp": 1717200000,
+          "subjectType": "AGENT",
+          "subjectId": "sample-compute-agent"
+        },
+        {
+          "serviceId": "codex",
+          "rail": "MPP",
+          "activityCount": 1,
+          "paidRequests": 1,
+          "spendUsd": 0.05,
+          "timestamp": 1717286400,
+          "subjectType": "AGENT",
+          "subjectId": "sample-compute-agent"
+        }
+      ],
+      "evmChains": [
+        {
+          "chainId": "ethereum",
+          "txCount": 12,
+          "agentTxCount": 12,
+          "subjectType": "AGENT",
+          "subjectId": "sample-compute-agent",
+          "lastSeenAt": 1717286400
+        }
+      ]
+    }
+  }
+}

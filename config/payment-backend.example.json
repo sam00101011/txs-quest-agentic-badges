@@ -1,0 +1,12 @@
+{
+  "source": "http",
+  "url": "https://your-payment-backend.example/api/payment-history/query",
+  "healthUrl": "https://your-payment-backend.example/api/payment-history/health",
+  "requestShape": "agentic-poap.payment-history.v1",
+  "authTokenEnv": "PAYMENT_HISTORY_AUTH_TOKEN",
+  "authHeader": "authorization",
+  "timeoutMs": 8000,
+  "headers": {
+    "x-agentic-product": "agentic-poap"
+  }
+}

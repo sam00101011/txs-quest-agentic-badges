@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <script>
+      (function() {
+        var lastTouchEnd = 0;
+        ["gesturestart", "gesturechange", "gestureend"].forEach(function(type) {
+          document.addEventListener(type, function(event) {
+            event.preventDefault();
+          }, { passive: false });
+        });
+        document.addEventListener('touchend', function(event) {
+          var now = Date.now();
+          if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+          }
+          lastTouchEnd = now;
+        }, { passive: false });
+      })();
+    </script>
+    <meta name="description" content="Open txs.quest inside Farcaster to verify and claim Farcaster-only badges." />
+    <meta property="og:title" content="Claim on txs.quest" />
+    <meta property="og:description" content="Open txs.quest inside Farcaster to verify and claim Farcaster-only badges." />
+    <meta property="og:image" content="https://txs.quest/farcaster-share.svg" />
+    <meta property="og:url" content="https://txs.quest/claim" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="fc:miniapp"
+      content='{"version":"next","imageUrl":"https://txs.quest/farcaster-share.svg","button":{"title":"Claim","action":{"type":"launch_miniapp","name":"txs.quest","url":"https://txs.quest/claim?farcaster=1"}}}'
+    />
+    <meta
+      name="fc:frame"
+      content='{"version":"next","imageUrl":"https://txs.quest/farcaster-share.svg","button":{"title":"Claim","action":{"type":"launch_frame","name":"txs.quest","url":"https://txs.quest/claim?farcaster=1"}}}'
+    />
+    <title>txs.quest Claim</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta http-equiv="refresh" content="0; url=/?claimAssistant=1">
+    <script>
+      (function() {
+        var source = new URL(window.location.href);
+        var target = new URL("/", window.location.origin);
+        target.searchParams.set("claimAssistant", "1");
+        source.searchParams.forEach(function(value, key) {
+          if (!target.searchParams.has(key)) {
+            target.searchParams.append(key, value);
+          }
+        });
+        window.location.replace(target.toString());
+      })();
+    </script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0f0f10;
+        color: #f6f3ec;
+        font: 500 16px/1.5 "IBM Plex Sans", system-ui, sans-serif;
+      }
+
+      a {
+        color: #ff7a45;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Redirecting to the txs.quest claim assistant. If nothing happens, open <a href="/?claimAssistant=1&amp;farcaster=1">txs.quest/claim</a>.</p>
+  </body>
+</html>

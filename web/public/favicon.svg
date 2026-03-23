@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="coin-fill" x1="12" y1="10" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE59A" />
+      <stop offset="0.52" stop-color="#F4BC43" />
+      <stop offset="1" stop-color="#B97910" />
+    </linearGradient>
+    <linearGradient id="coin-rim" x1="16" y1="14" x2="50" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF2BF" />
+      <stop offset="1" stop-color="#D99923" />
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="24" fill="url(#coin-fill)" />
+  <circle cx="32" cy="32" r="19.5" stroke="url(#coin-rim)" stroke-width="3" />
+  <path
+    d="M32 18 42 24.2v15.6L32 46l-10-6.2V24.2L32 18Z"
+    fill="none"
+    stroke="#6A4109"
+    stroke-linejoin="round"
+    stroke-width="3.25"
+  />
+</svg>

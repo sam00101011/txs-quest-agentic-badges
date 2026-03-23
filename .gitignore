@@ -1,0 +1,20 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+cache/
+output/
+.wrangler/
+coverage/
+*.log
+.claude/
+skills/
+skills-lock.json
+
+# Foundry build artifacts
+out/
+
+# Local deployment and generated state
+web/public/local/

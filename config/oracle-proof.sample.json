@@ -1,0 +1,265 @@
+{
+  "walletAgeActivity": {
+    "0x1234567890abcdef1234567890abcdef12345678": {
+      "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "firstActivityAt": 1672531200,
+      "txCount": 48,
+      "gasSpentUsd": 122.5,
+      "chains": {
+        "base": {
+          "firstActivityAt": 1672531200,
+          "txCount": 24,
+          "gasSpentUsd": 48.5
+        },
+        "ethereum": {
+          "firstActivityAt": 1688169600,
+          "txCount": 24,
+          "gasSpentUsd": 74
+        }
+      }
+    },
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": {
+      "walletAddress": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+      "firstActivityAt": 1577836800,
+      "txCount": 12844,
+      "gasSpentUsd": 2345.67,
+      "chains": {
+        "ethereum": {
+          "firstActivityAt": 1577836800,
+          "txCount": 4221,
+          "gasSpentUsd": 1820.14
+        },
+        "base": {
+          "firstActivityAt": 1688169600,
+          "txCount": 8623,
+          "gasSpentUsd": 525.53
+        }
+      }
+    }
+  },
+  "protocolActivity": {
+    "0x1234567890abcdef1234567890abcdef12345678": {
+      "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "interactions": [
+        {
+          "protocolId": "bao-finance",
+          "chainId": "base",
+          "timestamp": 1711929600,
+          "txHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "interactionCount": 1
+        }
+      ]
+    },
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": {
+      "walletAddress": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+      "interactions": [
+        {
+          "protocolId": "bao-finance",
+          "chainId": "base",
+          "timestamp": 1711929600,
+          "txHash": "0x2111111111111111111111111111111111111111111111111111111111111111",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "aave",
+          "chainId": "ethereum",
+          "timestamp": 1712016000,
+          "txHash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "uniswap",
+          "chainId": "ethereum",
+          "timestamp": 1712102400,
+          "txHash": "0x2333333333333333333333333333333333333333333333333333333333333333",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "curve",
+          "chainId": "optimism",
+          "timestamp": 1712188800,
+          "txHash": "0x2444444444444444444444444444444444444444444444444444444444444444",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "balancer",
+          "chainId": "ethereum",
+          "timestamp": 1712275200,
+          "txHash": "0x2555555555555555555555555555555555555555555555555555555555555555",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "compound",
+          "chainId": "ethereum",
+          "timestamp": 1712361600,
+          "txHash": "0x2666666666666666666666666666666666666666666666666666666666666666",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "convex",
+          "chainId": "ethereum",
+          "timestamp": 1712448000,
+          "txHash": "0x2777777777777777777777777777777777777777777777777777777777777777",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "pendle",
+          "chainId": "arbitrum",
+          "timestamp": 1712534400,
+          "txHash": "0x2888888888888888888888888888888888888888888888888888888888888888",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "aerodrome",
+          "chainId": "base",
+          "timestamp": 1712620800,
+          "txHash": "0x2999999999999999999999999999999999999999999999999999999999999999",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "yearn",
+          "chainId": "optimism",
+          "timestamp": 1712707200,
+          "txHash": "0x2aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "interactionCount": 1
+        },
+        {
+          "protocolId": "sushiswap",
+          "chainId": "arbitrum",
+          "timestamp": 1712793600,
+          "txHash": "0x2bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "interactionCount": 1
+        }
+      ]
+    }
+  },
+  "portfolioState": {
+    "0x1234567890abcdef1234567890abcdef12345678": {
+      "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "tokenUsd": 2500,
+      "nftUsd": 3400,
+      "defiUsd": 1800,
+      "collections": [
+        {
+          "collectionId": "artblocks",
+          "balance": 1,
+          "valueUsd": 3400
+        }
+      ],
+      "positions": [
+        {
+          "protocolId": "aerodrome",
+          "chainId": "base",
+          "valueUsd": 1800
+        }
+      ]
+    },
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": {
+      "walletAddress": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+      "tokenUsd": 12500,
+      "nftUsd": 109000,
+      "defiUsd": 29000,
+      "collections": [
+        {
+          "collectionId": "cryptopunks",
+          "balance": 1,
+          "valueUsd": 95000
+        },
+        {
+          "collectionId": "doodles",
+          "balance": 1,
+          "valueUsd": 9000
+        },
+        {
+          "collectionId": "pepe",
+          "balance": 1,
+          "valueUsd": 5000
+        }
+      ],
+      "positions": [
+        {
+          "protocolId": "uniswap",
+          "chainId": "ethereum",
+          "valueUsd": 11000
+        },
+        {
+          "protocolId": "aerodrome",
+          "chainId": "base",
+          "valueUsd": 7500
+        },
+        {
+          "protocolId": "aave",
+          "chainId": "arbitrum",
+          "valueUsd": 6200
+        },
+        {
+          "protocolId": "curve",
+          "chainId": "optimism",
+          "valueUsd": 4300
+        }
+      ]
+    }
+  },
+  "internalServiceActivity": {
+    "0x1234567890abcdef1234567890abcdef12345678": {
+      "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "activities": [
+        {
+          "serviceId": "openclaw",
+          "rail": "APP",
+          "activityCount": 1,
+          "paidRequests": 0,
+          "spendUsd": 0,
+          "timestamp": 1714521600,
+          "subjectType": "AGENT",
+          "subjectId": "sample-openclaw-agent"
+        }
+      ],
+      "evmChains": [
+        {
+          "chainId": "base",
+          "txCount": 3,
+          "agentTxCount": 3,
+          "subjectType": "AGENT",
+          "subjectId": "sample-openclaw-agent",
+          "lastSeenAt": 1714608000
+        }
+      ]
+    },
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": {
+      "walletAddress": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+      "activities": [
+        {
+          "serviceId": "bankr-llm",
+          "rail": "X402",
+          "activityCount": 2,
+          "paidRequests": 2,
+          "spendUsd": 0.08,
+          "timestamp": 1717200000,
+          "subjectType": "AGENT",
+          "subjectId": "sample-compute-agent"
+        },
+        {
+          "serviceId": "codex",
+          "rail": "MPP",
+          "activityCount": 1,
+          "paidRequests": 1,
+          "spendUsd": 0.05,
+          "timestamp": 1717286400,
+          "subjectType": "AGENT",
+          "subjectId": "sample-compute-agent"
+        }
+      ],
+      "evmChains": [
+        {
+          "chainId": "ethereum",
+          "txCount": 12,
+          "agentTxCount": 12,
+          "subjectType": "AGENT",
+          "subjectId": "sample-compute-agent",
+          "lastSeenAt": 1717286400
+        }
+      ]
+    }
+  }
+}

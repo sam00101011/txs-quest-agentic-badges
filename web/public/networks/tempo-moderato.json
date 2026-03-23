@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "mode": "onchain",
+  "environment": "testnet",
+  "network": {
+    "name": "tempo-moderato",
+    "chainId": "42431",
+    "rpcUrl": "https://rpc.moderato.tempo.xyz"
+  },
+  "deploymentBlock": "9459000",
+  "eventStartBlock": "9459000",
+  "chainId": "42431",
+  "rpcUrl": "https://rpc.moderato.tempo.xyz",
+  "badgeRegistryAddress": "0x1916584df2c1971d93a17967d8ef3b6047ec35f3",
+  "assetRegistryAddress": "0x4c906341e90d29a364afd986e98ad059a8219bea",
+  "claimRendererAddress": "0x501ca8978248ee9188f5d404facb956e09a3ca2f",
+  "identityRegistryAddress": "0xaac7691d4b0b88e41ffac1c844f87073df72ab9d",
+  "reputationRegistryAddress": "0x924a874c2919eaf0e2b64bca2773062f566e7ec1",
+  "claimPageBaseUri": "https://txs.quest/?deployment=/networks/tempo-moderato.json",
+  "viewerBaseUrl": "https://txs.quest",
+  "farcasterServiceUrl": "https://txs.quest/api/farcaster/proof",
+  "paymentProofServiceUrl": "",
+  "x402ServiceUrl": "",
+  "mppServiceUrl": "",
+  "eventSignerAddress": "0x88984f188dabd42e791057f647a05a2bce411d18",
+  "deployer": "0x88984F188Dabd42E791057f647a05a2BCe411D18",
+  "services": {
+    "viewer": {
+      "baseUrl": "https://txs.quest",
+      "claimPageBaseUri": "https://txs.quest/?deployment=/networks/tempo-moderato.json"
+    },
+    "farcaster": {
+      "proofUrl": "https://txs.quest/api/farcaster/proof",
+      "healthUrl": "https://txs.quest/api/farcaster/health"
+    },
+    "paymentProof": {
+      "proofUrl": "",
+      "healthUrl": "",
+      "decisionsUrl": "",
+      "backendUrl": "",
+      "backendHealthUrl": "",
+      "requestShape": "agentic-poap.payment-history.v1"
+    },
+    "mpp": {
+      "mintUrl": ""
+    }
+  },
+  "contracts": {
+    "badgeAssetRegistry": "0x4c906341e90d29a364afd986e98ad059a8219bea",
+    "badgeClaimRenderer": "0x501ca8978248ee9188f5d404facb956e09a3ca2f",
+    "identityRegistry": "0xaac7691d4b0b88e41ffac1c844f87073df72ab9d",
+    "reputationRegistry": "0x924a874c2919eaf0e2b64bca2773062f566e7ec1",
+    "agenticBadgeRegistry": "0x1916584df2c1971d93a17967d8ef3b6047ec35f3"
+  },
+  "seeded": {
+    "catalogSize": 20,
+    "activeCatalogSize": 17,
+    "seededAt": "2026-03-22T18:38:15.462Z"
+  }
+}

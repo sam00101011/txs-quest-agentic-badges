@@ -1,0 +1,32 @@
+{
+  "environment": "testnet",
+  "network": "tempo-testnet",
+  "chainId": 31338,
+  "rpcUrl": "https://your-testnet-rpc.example",
+  "viewerBaseUrl": "https://your-preview.example",
+  "claimPageBaseUri": "https://your-preview.example/?deployment=/networks/tempo-testnet.json",
+  "oracleServiceUrl": "https://your-proof-service.example/api/oracle/proof",
+  "oracleProofHealthUrl": "https://your-proof-service.example/api/oracle/health",
+  "paymentProofServiceUrl": "https://your-proof-service.example/api/x402/proof",
+  "paymentProofHealthUrl": "https://your-proof-service.example/api/x402/health",
+  "paymentBackendUrl": "https://your-payment-backend.example/api/payment-history/query",
+  "paymentBackendHealthUrl": "https://your-payment-backend.example/api/payment-history/health",
+  "mppServiceUrl": "https://your-mpp-service.example/api/mint/claim",
+  "proofIssuerAddress": "0x0000000000000000000000000000000000000000",
+  "privateKeyEnv": "PRIVATE_KEY",
+  "services": {
+    "oracleProof": {
+      "proofUrl": "https://your-proof-service.example/api/oracle/proof",
+      "healthUrl": "https://your-proof-service.example/api/oracle/health"
+    },
+    "paymentProof": {
+      "proofUrl": "https://your-proof-service.example/api/x402/proof",
+      "healthUrl": "https://your-proof-service.example/api/x402/health",
+      "backendUrl": "https://your-payment-backend.example/api/payment-history/query",
+      "backendHealthUrl": "https://your-payment-backend.example/api/payment-history/health"
+    },
+    "mpp": {
+      "mintUrl": "https://your-mpp-service.example/api/mint/claim"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": "zapper-x402",
+  "url": "https://public.zapper.xyz/x402",
+  "graphqlUrl": "https://public.zapper.xyz/graphql",
+  "apiKeyEnv": "ORACLE_ZAPPER_API_KEY",
+  "payerEnvFileEnv": "ORACLE_ZAPPER_X402_PAYER_ENV_FILE",
+  "payerEnvKey": "DEPLOYER_PRIVATE_KEY",
+  "rpcUrl": "https://mainnet.base.org",
+  "timeoutMs": 8000,
+  "pageSize": 100,
+  "maxPages": 100,
+  "chainIds": [1, 10, 137, 8453, 42161],
+  "headers": {
+    "x-agentic-product": "agentic-poap"
+  },
+  "protocolAliases": {
+    "bao-finance": ["bao-finance", "bao-swap", "bao"]
+  },
+  "adapterBackends": {
+    "INTERNAL_SERVICE_ACTIVITY": {
+      "source": "http",
+      "url": "http://127.0.0.1:8791/api/internal-service/query",
+      "healthUrl": "http://127.0.0.1:8791/api/internal-service/health",
+      "requestShape": "agentic-poap.internal-service-activity.v1"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#0F0F10"/>
+  <rect x="72" y="72" width="1056" height="656" rx="44" fill="url(#panel)"/>
+  <circle cx="600" cy="318" r="122" fill="url(#coin)"/>
+  <circle cx="600" cy="318" r="104" stroke="rgba(255,255,255,0.18)" stroke-width="8"/>
+  <path d="M600 246C639.765 246 672 278.235 672 318C672 357.765 639.765 390 600 390C560.235 390 528 357.765 528 318C528 278.235 560.235 246 600 246Z" fill="rgba(15,15,16,0.08)"/>
+  <circle cx="600" cy="318" r="63" stroke="#0F0F10" stroke-opacity="0.18" stroke-width="10"/>
+  <path d="M600 274V362" stroke="#2A2006" stroke-opacity="0.42" stroke-width="14" stroke-linecap="round"/>
+  <path d="M560 296H626C642.569 296 656 309.431 656 326C656 342.569 642.569 356 626 356H548" stroke="#2A2006" stroke-opacity="0.42" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="536" text-anchor="middle" fill="#F6F3EC" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="1.8">txs.quest</text>
+  <text x="600" y="608" text-anchor="middle" fill="#A8A39A" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="34" font-weight="500">Verifiable credentials for AI agents</text>
+  <defs>
+    <linearGradient id="panel" x1="72" y1="72" x2="1128" y2="728" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#171718"/>
+      <stop offset="1" stop-color="#121213"/>
+    </linearGradient>
+    <radialGradient id="coin" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(560 262) rotate(47.1663) scale(218.313)">
+      <stop stop-color="#FFE9A2"/>
+      <stop offset="0.42" stop-color="#F3BE36"/>
+      <stop offset="1" stop-color="#A96A05"/>
+    </radialGradient>
+  </defs>
+</svg>

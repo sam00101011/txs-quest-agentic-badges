@@ -1,0 +1,39 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjM5NjAzMCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweGQzNjFFOTNDNjBGRjZFMTIwN2NiN0ZBRWY5Y0FEOERERTBhNWMxMjIifQ",
+    "payload": "eyJkb21haW4iOiJ0eHMucXVlc3QifQ",
+    "signature": "HyvqfY5tu_g7fnfLhSMGEAe5FxLqsWznmCD8WjA7BnBcvVVI4LNh0GY1gZXn4MykpG4vvEX4sTJxdtflzH5wwhs"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "txs.quest",
+    "homeUrl": "https://txs.quest/claim?farcaster=1",
+    "iconUrl": "https://txs.quest/favicon.svg",
+    "imageUrl": "https://txs.quest/farcaster-share.svg",
+    "buttonTitle": "Claim",
+    "splashImageUrl": "https://txs.quest/favicon.svg",
+    "splashBackgroundColor": "#0f0f10",
+    "requiredCapabilities": [
+      "actions.ready",
+      "actions.signIn",
+      "experimental.signManifest"
+    ],
+    "canonicalDomain": "txs.quest"
+  },
+  "frame": {
+    "version": "1",
+    "name": "txs.quest",
+    "homeUrl": "https://txs.quest/claim?farcaster=1",
+    "iconUrl": "https://txs.quest/favicon.svg",
+    "imageUrl": "https://txs.quest/farcaster-share.svg",
+    "buttonTitle": "Claim",
+    "splashImageUrl": "https://txs.quest/favicon.svg",
+    "splashBackgroundColor": "#0f0f10",
+    "requiredCapabilities": [
+      "actions.ready",
+      "actions.signIn",
+      "experimental.signManifest"
+    ],
+    "canonicalDomain": "txs.quest"
+  }
+}

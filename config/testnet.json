@@ -1,0 +1,31 @@
+{
+  "environment": "testnet",
+  "network": "tempo-moderato",
+  "chainId": 42431,
+  "rpcUrl": "https://rpc.moderato.tempo.xyz",
+  "viewerBaseUrl": "https://txs.quest",
+  "claimPageBaseUri": "https://txs.quest/?deployment=/networks/tempo-moderato.json",
+  "farcasterServiceUrl": "https://txs.quest/api/farcaster/proof",
+  "paymentProofServiceUrl": "http://127.0.0.1:8788/api/x402/proof",
+  "paymentProofHealthUrl": "http://127.0.0.1:8788/api/x402/health",
+  "paymentBackendUrl": "http://127.0.0.1:8789/api/payment-history/query",
+  "paymentBackendHealthUrl": "http://127.0.0.1:8789/api/payment-history/health",
+  "mppServiceUrl": "http://127.0.0.1:8787/api/mint/claim",
+  "proofIssuerAddress": "0x88984f188dabd42e791057f647a05a2bce411d18",
+  "privateKeyEnv": "PRIVATE_KEY",
+  "services": {
+    "farcaster": {
+      "proofUrl": "https://txs.quest/api/farcaster/proof",
+      "healthUrl": "https://txs.quest/api/farcaster/health"
+    },
+    "paymentProof": {
+      "proofUrl": "http://127.0.0.1:8788/api/x402/proof",
+      "healthUrl": "http://127.0.0.1:8788/api/x402/health",
+      "backendUrl": "http://127.0.0.1:8789/api/payment-history/query",
+      "backendHealthUrl": "http://127.0.0.1:8789/api/payment-history/health"
+    },
+    "mpp": {
+      "mintUrl": "http://127.0.0.1:8787/api/mint/claim"
+    }
+  }
+}
